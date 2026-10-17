@@ -13,7 +13,7 @@ for (const match of html.matchAll(/(?:src|href)="([^"#][^"]*)"/g)) {
 }
 for (const match of html.matchAll(/href="#([^"]+)"/g)) if (!ids.includes(match[1]) && !['arrow','back','code','play','download','upload','github'].includes(match[1])) throw Error('Missing section: ' + match[1]);
 for (const filename of ['app.js', 'processing.js', 'worker.js', 'site-config.js', 'scripts/serve.mjs']) execFileSync(process.execPath, ['--check', join(root, filename)], { stdio: 'pipe' });
-for (const name of ['task1', 'task2', 'task3', 'playground', 'questions', 'python', 'objectives', 'conclusion']) if (!ids.includes(name)) throw Error('Missing required section: ' + name);
+for (const name of ['task1', 'task2', 'task3', 'playground', 'questions', 'objectives', 'conclusion']) if (!ids.includes(name)) throw Error('Missing required section: ' + name);
 const config = await readFile(join(root, 'site-config.js'), 'utf8');
 if (!config.includes('compilationUrl') || !config.includes('repositoryUrl')) throw Error('Missing URL configuration');
 console.log('Static assets, section anchors, syntax, and integration configuration passed.');

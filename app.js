@@ -225,18 +225,15 @@ $('#download-orb').addEventListener('click', () => { if (state.live) jsonDownloa
 try { $('#observation-notes').value = localStorage.getItem('csst106-lab04-notes') || ''; } catch {}
 $('#observation-notes').addEventListener('input', () => { try { localStorage.setItem('csst106-lab04-notes', $('#observation-notes').value); $('#notes-status').textContent = 'Saved in this browser.'; } catch { $('#notes-status').textContent = 'Download your notes to keep them.'; } });
 $('#download-notes').addEventListener('click', () => download(new Blob([`# CSST106 Lab 4 — Observations\n\n${$('#observation-notes').value || 'No personal notes entered.'}\n\n${$('#results-context').textContent}\n${$('#comparison-observation').textContent}\n`], { type: 'text/markdown' }), 'lab4-observations.md'));
-let pythonSource = '';
-fetch('./python/surf_lab.py').then(r => { if (!r.ok) throw Error(); return r.text(); }).then(text => { pythonSource = text; $('#python-code').textContent = text; $('#copy-code').disabled = false; }).catch(() => $('#python-code').textContent = 'Preview unavailable. Download the Python kit above.');
-$('#copy-code').addEventListener('click', async () => { try { await navigator.clipboard.writeText(pythonSource); toast('Python code copied.'); } catch { const range = document.createRange(); range.selectNodeContents($('#python-code')); const selection = getSelection(); selection.removeAllRanges(); selection.addRange(range); toast('Code selected. Press Ctrl+C or Command+C.'); } });
-let stored = {}; try { stored = JSON.parse(localStorage.getItem('csst106-lab04-links') || '{}') || {}; } catch {}
-let config = { compilationUrl: '', repositoryUrl: '', ...window.LAB_CONFIG, ...stored };
-function validUrl(value) { if (!value) return ''; const url = new URL(value); if (!['http:', 'https:'].includes(url.protocol)) throw Error('Use a complete HTTP or HTTPS address.'); return url.href; }
-function openSettings() { $('#compilation-url').value = config.compilationUrl || ''; $('#repository-url').value = config.repositoryUrl || ''; error('#link-error'); $('#link-dialog').showModal(); }
-for (const button of $$('[data-destination]')) button.addEventListener('click', () => { const key = button.dataset.destination === 'repository' ? 'repositoryUrl' : 'compilationUrl'; try { const url = validUrl(config[key]); if (!url) openSettings(); else if (key === 'repositoryUrl') window.open(url, '_blank', 'noopener,noreferrer'); else location.assign(url); } catch { openSettings(); } });
-$('#open-settings').addEventListener('click', openSettings); $('#close-dialog').addEventListener('click', () => $('#link-dialog').close());
-function formConfig() { return { compilationUrl: validUrl($('#compilation-url').value.trim()), repositoryUrl: validUrl($('#repository-url').value.trim()) }; }
-$('#link-form').addEventListener('submit', e => { e.preventDefault(); try { config = formConfig(); try { localStorage.setItem('csst106-lab04-links', JSON.stringify(config)); toast('Links saved for this browser.'); } catch { toast('Links applied for this visit.'); } $('#link-dialog').close(); } catch (e) { error('#link-error', e.message); } });
-$('#download-config').addEventListener('click', () => { try { download(new Blob([`window.LAB_CONFIG = ${JSON.stringify(formConfig(), null, 2)};\n`], { type: 'text/javascript' }), 'site-config.js'); } catch (e) { error('#link-error', e.message); } });
+// Public navigation exposes the compilation destination only.
+document.querySelectorAll('[data-destination="compilation"]').forEach(button => button.addEventListener('click', () => {
+  try {
+    const url = new URL(window.LAB_CONFIG?.compilationUrl || '');
+    if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) throw new Error('Invalid compilation address.');
+    window.location.assign(url.href);
+  } catch { toast('The compilation link is not configured.'); }
+}));
+
 $('#menu-toggle').addEventListener('click', () => { const open = $('#menu-toggle').getAttribute('aria-expanded') !== 'true'; $('#menu-toggle').setAttribute('aria-expanded', String(open)); $('#menu-toggle').setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation'); $('#main-nav').classList.toggle('open', open); });
 function closeMenu() { $('#main-nav').classList.remove('open'); $('#menu-toggle').setAttribute('aria-expanded', 'false'); $('#menu-toggle').setAttribute('aria-label', 'Open navigation'); }
 for (const link of $$('#main-nav a')) link.addEventListener('click', closeMenu);
