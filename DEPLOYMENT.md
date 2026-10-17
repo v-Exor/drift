@@ -1,9 +1,9 @@
 # Laboratory 4 publication and compilation integration
 
-Repository: https://github.com/v-Exor/LabAct4_CSST106
+Repository: https://github.com/v-Exor/drift
 
 Website address (available after the first successful Pages deployment):
-https://v-exor.github.io/LabAct4_CSST106/
+https://v-exor.github.io/drift/
 
 Publishing source: GitHub Actions. The included .github/workflows/pages.yml
 checks all static assets and genuine OpenCV feature fixtures before deployment.
@@ -14,13 +14,13 @@ Push future updates to main to publish them.
 Set its Laboratory Activity 4 button/link destination to:
 
 ```text
-https://v-exor.github.io/LabAct4_CSST106/
+https://v-exor.github.io/drift/
 ```
 
 For a plain HTML compilation page:
 
 ```html
-<a href="https://v-exor.github.io/LabAct4_CSST106/"
+<a href="https://v-exor.github.io/drift/"
    target="_blank" rel="noopener noreferrer">
   Open Laboratory Activity 4
 </a>

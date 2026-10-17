@@ -3,7 +3,7 @@
 An independent, buildless GitHub Pages website for Laboratory Exercise No. 4.
 The white/orange VisionLab theme matches Labs 1–3 in the compilation. No school
 logos are used. The independent repository is
-https://github.com/v-Exor/LabAct4_CSST106. See DEPLOYMENT.md for the website
+https://github.com/v-Exor/drift. See DEPLOYMENT.md for the website
 address and compilation integration.
 
 ## What works
