@@ -1,0 +1,3 @@
+# OpenCV must be supplied by a SURF-enabled contrib/nonfree build; see README.md.
+# Ordinary current opencv-contrib-python wheels do not enable SURF.
+numpy>=1.21
